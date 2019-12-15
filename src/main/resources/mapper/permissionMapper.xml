@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lk.test.vuestudy.dao.PermissionDao">
+
+    <select id="getUserPermission" resultType="com.lk.test.vuestudy.vo.ResourceItem">
+        select p.`id` as id, p.`pid` as pid, p.`permission_name` as resource_name,
+        p.`permission_type` as resource_type,p.`resource_url` as url,rp.`opt` as opt from `user_role` ur
+        left join `role_permission` rp on ur.`role_id`=rp.`role_id`
+        inner join permission p on rp.`permission_id`=p.`id`
+        where ur.`user_id`=#{userId}
+        <if test="permissionType != null and permissionType !='' ">
+            and p.`permission_type` in #{permissionType};
+        </if>
+    </select>
+
+    <select id="getMenuList" resultType="com.lk.test.vuestudy.vo.ResourceItem">
+        select p.`id` as id, p.`pid` as pid, p.`permission_name` as resource_name,
+        p.`permission_type` as resource_type,p.`resource_url` as url,rp.`opt` as opt from `user_role` ur
+        left join `role_permission` rp on ur.`role_id`=rp.`role_id`
+        inner join permission p on rp.`permission_id`=p.`id`
+        where p.`permission_type` &lt; 3  and ur.`user_id`=#{userId}
+    </select>
+
+</mapper>
